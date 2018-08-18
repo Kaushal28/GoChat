@@ -1,10 +1,10 @@
 package main
 
 import (
-    "net/http"
+	"net/http"
 )
 
 func main() {
-    router := NewRouter()
-    http.ListenAndServe(":8080", router)
+	router := NewRouter()
+	http.ListenAndServe(":8080", router)
 }
