@@ -51,6 +51,7 @@ func userAlreadyExists(uname string) bool {
 	return false
 }
 
+//SendMsg for sending messages
 func SendMsg(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	decoder := json.NewDecoder(r.Body)
