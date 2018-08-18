@@ -19,8 +19,14 @@ var routes = Routes{
 	Route{
 		"Subscribe",
 		"POST",
-		"/",
+		"/subscribe",
 		Subscribe,
+	},
+	Route{
+		"sendmsg",
+		"POST",
+		"/send",
+		SendMsg,
 	},
 }
 

@@ -8,6 +8,9 @@ import (
 
 var allUsers []string
 
+//Create a hashmap to store the messages of offline users
+var messageQ = make(map[string][]Message)
+
 //Subscribe for subscribing new user
 func Subscribe(w http.ResponseWriter, r *http.Request) {
 
@@ -28,11 +31,13 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 			w.Write(userJSON)
 		}
 	} else {
-		errorMsg, err := json.Marshal("User already exists.")
+		messageJSON, err := json.Marshal(messageQ[user.Username])
 		if err != nil {
 			log.Fatal("Can't encode to JSON ", err)
+		} else {
+			w.Write(messageJSON)
+			delete(messageQ, user.Username)
 		}
-		w.Write(errorMsg)
 	}
 }
 
@@ -43,4 +48,16 @@ func userAlreadyExists(uname string) bool {
 		}
 	}
 	return false
+}
+
+func SendMsg(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	decoder := json.NewDecoder(r.Body)
+	var message Message
+	err := decoder.Decode(&message)
+	if err != nil {
+		panic(err)
+	} else {
+		messageQ[message.To] = append(messageQ[message.To], message)
+	}
 }
