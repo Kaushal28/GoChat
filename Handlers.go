@@ -36,6 +36,7 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 			log.Fatal("Can't encode to JSON ", err)
 		} else {
 			w.Write(messageJSON)
+			//remove from map once delivered
 			delete(messageQ, user.Username)
 		}
 	}
